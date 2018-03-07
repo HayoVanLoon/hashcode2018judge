@@ -2,6 +2,7 @@ package nl.hayovanloon.hashcode2018.filters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -32,8 +33,12 @@ public class AuthFilter implements Filter {
     try {
       final InputStream is = this.getClass().getClassLoader()
           .getResourceAsStream("auth.yaml");
-      final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-      yaml = mapper.readTree(is);
+      if (is != null) {
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        yaml = mapper.readTree(is);
+      } else {
+        yaml = JsonNodeFactory.instance.objectNode();
+      }
     } catch (IOException ex) {
       throw new ServletException(ex);
     }
