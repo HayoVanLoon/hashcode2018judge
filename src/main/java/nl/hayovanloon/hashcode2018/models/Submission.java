@@ -92,7 +92,8 @@ public class Submission {
               for (int i = 1; i < cols.length; i += 1) {
                 int ride = Integer.parseInt(cols[i]);
                 if (rides[ride]) {
-                  return new Invalid("Some rides have been taken (at least) twice.");
+                  return new Invalid(
+                      "Some rides have been taken (at least) twice.");
                 } else {
                   cabRides[cab][i-1] = Integer.parseInt(cols[i]);
                   rides[ride] = true;
