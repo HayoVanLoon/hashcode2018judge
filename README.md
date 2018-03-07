@@ -5,7 +5,9 @@ This is an (unofficial) AppEngine for judging and scoring solutions to the
 Online Qualification Round of Google's 2018 Hash Code contest. 
 
 Problem description and data sets have not been added (yet, pending an
-outstanding question with Google's organisers regarding licenses).
+outstanding question with Google's organisers regarding licenses). For the app 
+to function, these should be placed in the ```src/main/resources``` and 
+```src/webapp/static/downloads``` directories.
 
 
 ## Maven
