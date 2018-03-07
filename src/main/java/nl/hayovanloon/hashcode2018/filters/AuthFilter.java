@@ -26,6 +26,7 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
 public class AuthFilter implements Filter {
 
   private static Option<String> userEmailHost = Option.none();
+  private static boolean noAuth;
 
   @Override
   public void init(FilterConfig arg0) throws ServletException {
@@ -38,6 +39,7 @@ public class AuthFilter implements Filter {
         yaml = mapper.readTree(is);
       } else {
         yaml = JsonNodeFactory.instance.objectNode();
+        noAuth = true;
       }
     } catch (IOException ex) {
       throw new ServletException(ex);
@@ -66,7 +68,7 @@ public class AuthFilter implements Filter {
       } else {
         chain.doFilter(request, response);
       }
-    } else if (!userService.isUserLoggedIn()) {
+    } else if (!userService.isUserLoggedIn() && !noAuth) {
       final String url = userService.createLoginURL(req.getRequestURI());
       ((HttpServletResponse) response).sendRedirect(url);
     } else {
