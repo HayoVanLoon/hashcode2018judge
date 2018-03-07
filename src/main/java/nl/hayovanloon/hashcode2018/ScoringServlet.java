@@ -62,9 +62,8 @@ public class ScoringServlet extends HttpServlet {
 
   private Rules getRules(String problem) throws IOException {
     if (!rules.containsKey(problem)) {
-      try (final InputStreamReader reader = new InputStreamReader(this.getClass()
-          .getClassLoader()
-          .getResourceAsStream(problem))) {
+      try (final InputStreamReader reader = new InputStreamReader(this
+          .getClass().getClassLoader().getResourceAsStream(problem))) {
         rules.put(problem, Rules.from(reader));
       }
     }
