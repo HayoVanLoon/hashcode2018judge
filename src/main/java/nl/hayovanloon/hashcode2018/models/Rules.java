@@ -1,7 +1,6 @@
 package nl.hayovanloon.hashcode2018.models;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 

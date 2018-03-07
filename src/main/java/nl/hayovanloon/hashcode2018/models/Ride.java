@@ -2,7 +2,6 @@ package nl.hayovanloon.hashcode2018.models;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class Ride {
 
