@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<span>Paste your solution here</span>
+<span>Simply copy-paste your solution here</span>
 
 <form action="<c:url value="/score"/>" method="post">
 

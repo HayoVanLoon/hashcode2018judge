@@ -1,4 +1,5 @@
 <%--@elvariable id="problem" type="java.lang.String"--%>
+<%--@elvariable id="oldScore" type="java.lang.Long"--%>
 <%--@elvariable id="submission" type="nl.hayovanloon.hashcode2018.models.Submission"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -56,6 +57,14 @@
     <div class="col s6 m3">Missed Rides</div>
     <div class="col s6">${submission.missedRides}</div>
   </div>
+
+  <c:if test="${submission.score - oldScore > 0}">
+  <div class="row">
+    <div class="col s12">
+      <i class="material-icons left orange">priority_high</i><span>You beat your previous score of ${oldScore} by ${submission.score - oldScore} points!</span><i class="material-icons right orange">priority_high</i>
+    </div>
+  </div>
+  </c:if>
 
   <div class="row">
     <div class="col s12"><a href="<c:url value="/index.jsp"/>" class="waves-effect waves-light btn">Back</a>
