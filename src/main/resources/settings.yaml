@@ -1,2 +1,8 @@
 email-filter:
   by-host: example.com
+  by-regex: ".*@example\\.com"
+  exact:
+    - alice@example.com
+    - bob@example.com
+
+score-secret: bd2a27f0-3865-4fe2-9b42-fdf51bd04891

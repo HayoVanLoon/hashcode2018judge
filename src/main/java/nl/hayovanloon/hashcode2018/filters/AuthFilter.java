@@ -1,13 +1,9 @@
 package nl.hayovanloon.hashcode2018.filters;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import io.atlassian.fugue.Option;
+import nl.hayovanloon.hashcode2018.models.Settings;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,36 +14,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 public class AuthFilter implements Filter {
 
-  private static Option<String> userEmailHost = Option.none();
-  private static boolean noAuth;
+  private static Settings settings;
 
   @Override
   public void init(FilterConfig arg0) throws ServletException {
-    final JsonNode yaml;
     try {
-      final InputStream is = this.getClass().getClassLoader()
-          .getResourceAsStream("settings.yaml");
-      if (is != null) {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        yaml = mapper.readTree(is);
-      } else {
-        yaml = JsonNodeFactory.instance.objectNode();
-        noAuth = true;
-      }
-    } catch (IOException ex) {
-      throw new ServletException(ex);
+      settings = Settings.read(this);
+    } catch (IOException e) {
+      throw new ServletException(e);
     }
-
-    userEmailHost = Option.option(yaml.get("email-filter"))
-        .map(x -> x.get("by-host"))
-        .map(JsonNode::asText);
   }
 
   @Override
@@ -68,7 +49,7 @@ public class AuthFilter implements Filter {
       } else {
         chain.doFilter(request, response);
       }
-    } else if (!userService.isUserLoggedIn() && !noAuth) {
+    } else if (!userService.isUserLoggedIn()) {
       final String url = userService.createLoginURL(req.getRequestURI());
       ((HttpServletResponse) response).sendRedirect(url);
     } else {
@@ -76,15 +57,19 @@ public class AuthFilter implements Filter {
 
       if ("/logout.jsp".equals(path)) {
         chain.doFilter(req, response);
-      } else if (userEmailHost.isDefined()) {
-        if (userEmailHost.fold(() -> true, x -> user.getEmail().endsWith(x))) {
+      } else {
+        final String email = user.getEmail();
+        final boolean allow =
+            settings.getAllowByHost().fold(() -> false, email::endsWith)
+                || settings.getAllowByPattern().fold(() -> false, x -> x.matcher(email).matches())
+                || settings.getAllowExact().contains(email);
+
+        if (allow) {
           chain.doFilter(req, response);
         } else {
           ((HttpServletResponse) response).setStatus(SC_FORBIDDEN);
           req.getRequestDispatcher("/logout.jsp").forward(req, response);
         }
-      } else {
-        chain.doFilter(req, response);
       }
     }
   }
