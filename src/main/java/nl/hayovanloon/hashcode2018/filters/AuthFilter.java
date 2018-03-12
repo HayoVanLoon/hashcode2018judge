@@ -33,7 +33,7 @@ public class AuthFilter implements Filter {
     final JsonNode yaml;
     try {
       final InputStream is = this.getClass().getClassLoader()
-          .getResourceAsStream("auth.yaml");
+          .getResourceAsStream("settings.yaml");
       if (is != null) {
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         yaml = mapper.readTree(is);
