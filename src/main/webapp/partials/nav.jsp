@@ -10,7 +10,7 @@
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Unofficial 2018 <span class="hide-on-med-and-down">Hash Code</span> Judge</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="<c:url value="/static/downloads/online_qualification_round_2018.pdf"/>" target="_blank">Problem</a></li>
+            <li><a href="<c:url value="/static/downloads/online_qualification_round_2018.pdf"/>" target="_blank">Problem Statement</a></li>
             <li><a class="dropdown-button" href="#!" data-activates="sets-dropdown">Data Sets<i class="material-icons right">arrow_drop_down</i></a></li>
             <li><a href="<c:url value="/logout.jsp"/>"><i class="material-icons">exit_to_app</i></a></li>
         </ul>
