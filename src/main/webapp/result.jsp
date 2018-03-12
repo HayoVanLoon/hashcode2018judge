@@ -4,38 +4,12 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-  <title>Unofficial 2018 Judge</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <style>
-    nav {
-      background-color: #7d6eee;
-    }
-    .btn {
-      background-color: #2629a6;
-    }
-  </style>
-</head>
+
+<jsp:include page="/partials/head.jsp" />
+
 <body>
 
-<ul id="sets-dropdown" class="dropdown-content">
-  <li><a href="#">Example Set</a></li>
-  <li><a href="#">Should Be Easy Set</a></li>
-  <li><a href="#">No Hurry Set</a></li>
-  <li><a href="#">Metropolis Set</a></li>
-  <li><a href="#">High Bonus Set</a></li>
-</ul>
-<nav>
-  <div class="nav-wrapper">
-    <a href="#" class="brand-logo">Unofficial 2018 <span class="hide-on-med-and-down">Hash Code</span> Judge</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="<c:url value="/static/downloads/online_qualification_round_2018.pdf"/>" target="_blank">Problem</a></li>
-      <li class="hide"><a class="dropdown-button" href="#!" data-activates="sets-dropdown">Data Sets<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a href="<c:url value="/logout.jsp"/>"><i class="material-icons">exit_to_app</i></a></li>
-    </ul>
-  </div>
-</nav>
+<jsp:include page="/partials/nav.jsp" />
 
 <div class="container">
 
