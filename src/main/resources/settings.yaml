@@ -2,6 +2,7 @@ email-filter:
   by-host: example.com
   by-regex: ".*@example\\.com"
   exact:
+    - test@example.com
     - alice@example.com
     - bob@example.com
 

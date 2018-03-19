@@ -19,11 +19,32 @@ Works like any other AppEngine.
 
     mvn appengine:deploy
 
-## Limiting Access
-Access to the AppEngine is managed through the ```settings.yaml``` resource 
-file. It features a very basic filter on the host name of the user's e-mail 
-address.
+## Application Settings
+Settings are managed through the ```settings.yaml``` resource 
+file.
 
-The default value is 'example.com'. If no such filter is required, an empty file
-should limit access to authenticated by their Google account. Removing the file 
-entirely will grant access to anyone.
+### Limiting Access
+The settings file is used to create a very basic filter on the host name of the 
+user's e-mail address (from their Google Account).
+
+I will assume the example snippet below self-explanatory; it illustrates all 
+filter types. All are optional (so they need not overlap like here).
+
+```
+email-filter:
+  by-host: example.com
+  by-regex: ".*@example\\.com"
+  exact:
+    - test@example.com
+    - alice@example.com
+    - bob@example.com
+```
+
+### Securing High Scores
+(Personal) high scores are stored in Datastore with entity kind 
+```hashcodejudge_score```. Tampering with scores is limited through a simple 
+hash verification with a secret key. On tampering, the entity will be 
+reinitialised and the score(s) wiped. 
+
+The secret is stored in the ```score-secret``` 
+attribute. If absent, verification will be skipped. 
