@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import static io.atlassian.fugue.Option.option;
+
 public class Settings {
 
   private final Option<String> allowByHost;
@@ -45,26 +47,32 @@ public class Settings {
       yaml = JsonNodeFactory.instance.objectNode();
     }
 
-    allowByHost = Option.option(yaml.get("email-filter"))
-        .map(x -> x.get("by-host"))
-        .map(JsonNode::asText);
+    final Option<JsonNode> emailFilter = option(yaml.get(
+        "email-filter"));
 
-    allowByPattern = Option.option(yaml.get("email-filter"))
-        .map(x -> x.get("by-regex"))
-        .map(JsonNode::asText)
+    allowByHost = emailFilter
+        .flatMap(x -> option(x.get("by-host")))
+        .map(JsonNode::asText).filter(x -> !x.isEmpty());
+
+    allowByPattern = emailFilter
+        .flatMap(x -> option(x.get("by-regex")))
+        .map(JsonNode::asText).filter(x -> !x.isEmpty())
         .map(Pattern::compile);
 
-    allowExact = Option.option(yaml.get("email-filter"))
-        .map(x -> x.get("exact"))
-        .fold(ImmutableSet::of, adresses -> {
+    allowExact = emailFilter
+        .flatMap(x -> option(x.get("exact")))
+        .fold(ImmutableSet::of, addresses -> {
           final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
-          for (JsonNode address : adresses) {
-            builder.add(address.asText());
+          for (JsonNode address : addresses) {
+            final String s = address.asText();
+            if (!s.isEmpty()) {
+              builder.add(s);
+            }
           }
           return builder.build();
         });
 
-    scoreSecret = Option.option(yaml.get("score-secret")).map(JsonNode::asText);
+    scoreSecret = option(yaml.get("score-secret")).map(JsonNode::asText);
 
     return new Settings(allowByHost, allowByPattern, allowExact, scoreSecret);
   }
