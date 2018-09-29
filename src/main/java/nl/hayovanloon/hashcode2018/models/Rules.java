@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 
-public class Rules implements Serializable {
-  public final int R;
-  public final int C;
-  public final int F;
-  public final int N;
-  public final int B;
-  public final int T;
 
-  public Rules(int r, int c, int f, int n, int b, int t) {
+public class Rules implements Serializable {
+  final int F;
+  final int N;
+  final int B;
+  final int T;
+  private final int R;
+  private final int C;
+
+  Rules(int r, int c, int f, int n, int b, int t) {
     R = r;
     C = c;
     F = f;

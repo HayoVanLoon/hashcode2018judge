@@ -18,7 +18,7 @@ public class SubmissionTest {
     int[][] expected = {new int[]{}, new int[]{0}, new int[]{2, 1}};
 
     Submission submission = Submission.from(data, rules);
-    Assert.assertTrue(Arrays.deepEquals(submission.cabRides, expected));
+    Assert.assertTrue(Arrays.deepEquals(submission.getCabRides(), expected));
   }
 
   @Test
@@ -27,7 +27,7 @@ public class SubmissionTest {
     String data = "1 0\n2  2 1";
 
     Submission submission = Submission.from(data, rules);
-    Assert.assertTrue(Arrays.deepEquals(submission.cabRides, null));
+    Assert.assertTrue(Arrays.deepEquals(submission.getCabRides(), null));
     Assert.assertEquals("Incorrect line format (consecutive spaces)",
         submission.getMessage());
   }
@@ -38,7 +38,7 @@ public class SubmissionTest {
     String data = "1 0\n2 2 1\n3 3";
 
     Submission submission = Submission.from(data, rules);
-    Assert.assertTrue(Arrays.deepEquals(submission.cabRides, null));
+    Assert.assertTrue(Arrays.deepEquals(submission.getCabRides(), null));
     Assert.assertEquals("Too many lines (3), not enough cabs (2).",
         submission.getMessage());
   }
@@ -49,7 +49,7 @@ public class SubmissionTest {
     String data = "1 0\n1 2 1";
 
     Submission submission = Submission.from(data, rules);
-    Assert.assertTrue(Arrays.deepEquals(submission.cabRides, null));
+    Assert.assertTrue(Arrays.deepEquals(submission.getCabRides(), null));
     Assert.assertEquals("Incorrect number of rides: 1 != 2",
         submission.getMessage());
   }
@@ -60,7 +60,7 @@ public class SubmissionTest {
     String data = "1 0\n2 0 1";
 
     Submission submission = Submission.from(data, rules);
-    Assert.assertTrue(Arrays.deepEquals(submission.cabRides, null));
+    Assert.assertTrue(Arrays.deepEquals(submission.getCabRides(), null));
     Assert.assertEquals("Some rides have been taken (at least) twice.",
         submission.getMessage());
   }
@@ -76,7 +76,7 @@ public class SubmissionTest {
 
     int[][] cabRides = {new int[]{}, new int[]{0}, new int[]{2, 1}};
 
-    Submission submission = new Submission(cabRides);
+    Submission submission = new Submission(cabRides, null);
     submission.doScoring(rules, rides);
 
     Assert.assertEquals(10, submission.getScore());
@@ -93,7 +93,7 @@ public class SubmissionTest {
 
     int[][] cabRides = {new int[]{}, new int[]{0, 2, 1}, new int[]{}};
 
-    Submission submission = new Submission(cabRides);
+    Submission submission = new Submission(cabRides, null);
     submission.doScoring(rules, rides);
 
     Assert.assertEquals(6, submission.getScore());

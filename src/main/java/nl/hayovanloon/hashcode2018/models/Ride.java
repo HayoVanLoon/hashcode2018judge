@@ -3,16 +3,17 @@ package nl.hayovanloon.hashcode2018.models;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 public class Ride {
 
   private final int a;
   private final int b;
   private final int x;
   private final int y;
-  public final int s;
-  public final int f;
+  private final int s;
+  private final int f;
 
-  public Ride(int a, int b, int x, int y, int s, int f) {
+  Ride(int a, int b, int x, int y, int s, int f) {
     this.a = a;
     this.b = b;
     this.x = x;
@@ -43,7 +44,7 @@ public class Ride {
       read = reader.read();
 
       final StringBuilder sb = new StringBuilder();
-      while(read != -1 && read != '\n') {
+      while (read != -1 && read != '\n') {
         sb.append((char) read);
         read = reader.read();
       }
@@ -59,21 +60,28 @@ public class Ride {
     return rs;
   }
 
+  private static int manhattan(int x1, int y1, int x2, int y2) {
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+  }
 
-  public int distFrom(Ride ride) {
+  public int getLatestStart() {
+    return s;
+  }
+
+  public int getLatestFinish() {
+    return f;
+  }
+
+  int distFrom(Ride ride) {
     return distFrom(ride.x, ride.y);
   }
 
-  public int distFrom(int x, int y) {
+  private int distFrom(int x, int y) {
     return manhattan(x, y, this.a, this.b);
   }
 
-  public int getLength() {
+  int getLength() {
     return manhattan(a, b, x, y);
-  }
-
-  private static int manhattan(int x1, int y1, int x2, int y2) {
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
   }
 
   @Override

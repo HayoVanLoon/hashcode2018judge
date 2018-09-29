@@ -18,6 +18,7 @@ import java.io.IOException;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_OK;
 
+
 public class AuthFilter implements Filter {
 
   private static Settings settings;
@@ -61,7 +62,8 @@ public class AuthFilter implements Filter {
         final String email = user.getEmail();
         final boolean allow =
             settings.getAllowByHost().fold(() -> false, email::endsWith)
-                || settings.getAllowByPattern().fold(() -> false, x -> x.matcher(email).matches())
+                || settings.getAllowByPattern()
+                .fold(() -> false, x -> x.matcher(email).matches())
                 || settings.getAllowExact().contains(email);
 
         if (allow) {

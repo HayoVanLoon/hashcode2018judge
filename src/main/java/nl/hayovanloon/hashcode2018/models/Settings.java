@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static io.atlassian.fugue.Option.option;
 
+
 public class Settings {
 
   private final Option<String> allowByHost;

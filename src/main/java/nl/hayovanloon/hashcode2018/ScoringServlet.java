@@ -21,24 +21,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+
 @WebServlet(name = "scoring", urlPatterns = "/score")
 public class ScoringServlet extends HttpServlet {
 
+  private static final Logger LOG = Logger
+      .getLogger(ScoringServlet.class.getName());
+  private static final Map<String, Rules> rules = new ConcurrentHashMap<>();
   private static Map<String, Integer> PROBLEMS = ImmutableMap.of(
       "a_example.in", 0, "b_should_be_easy.in", 1, "c_no_hurry.in", 2,
       "d_metropolis.in", 3, "e_high_bonus.in", 4);
-
-  private static final Logger LOG = Logger
-      .getLogger(ScoringServlet.class.getName());
-
-  private static final Map<String, Rules> rules = new ConcurrentHashMap<>();
   private static final Ride[][] rides = new Ride[PROBLEMS.size()][];
 
   private static Settings settings;
@@ -62,7 +59,7 @@ public class ScoringServlet extends HttpServlet {
       final Rules rules = getRules(problem);
       final Submission submission = Submission.from(data, rules);
 
-      if (submission instanceof Submission.Invalid) {
+      if (submission.isInvalid()) {
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
         req.setAttribute("submission", submission);
@@ -94,7 +91,7 @@ public class ScoringServlet extends HttpServlet {
   }
 
   private Ride[] getRides(String problem) throws IOException {
-    int probNum = PROBLEMS.get(problem);
+    final int probNum = PROBLEMS.get(problem);
 
     if (rides[probNum] == null) {
       try (final InputStreamReader reader = new InputStreamReader(this
@@ -132,9 +129,10 @@ public class ScoringServlet extends HttpServlet {
     return (int) oldScore;
   }
 
-  private Entity getHighScore(DatastoreService datastore,
-                              Key key) throws IOException {
-    final Iterator<Entity> scoreOpt =  datastore.get(ImmutableList.of(key))
+  private Entity getHighScore(DatastoreService datastore, Key key)
+      throws IOException {
+
+    final Iterator<Entity> scoreOpt = datastore.get(ImmutableList.of(key))
         .values().iterator();
     if (scoreOpt.hasNext()) {
       final Entity highScore = scoreOpt.next();

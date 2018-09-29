@@ -61,7 +61,9 @@
   <c:if test="${submission.score - oldScore > 0}">
   <div class="row">
     <div class="col s12">
-      <i class="material-icons left orange">priority_high</i><span>You beat your previous score of ${oldScore} by ${submission.score - oldScore} points!</span><i class="material-icons right orange">priority_high</i>
+      <i class="material-icons left orange">priority_high</i>
+      <span>You beat your previous score of ${oldScore} by ${submission.score - oldScore} points!</span>
+      <i class="material-icons right orange">priority_high</i>
     </div>
   </div>
   </c:if>
